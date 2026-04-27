@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BukuController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,6 +16,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('admin/buku', BukuController::class);
+    });
+
+    Route::middleware(['role:petugas'])->group(function () {
+        Route::resource('petugas/buku', BukuController::class);
+    });
+
+    Route::middleware(['role:peminjam'])->group(function () {
+        Route::get('peminjam/buku', [BukuController::class, 'index']);
+    });
+
 });
 
 require __DIR__.'/auth.php';

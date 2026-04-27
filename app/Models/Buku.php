@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Buku extends Model
 {
-    //
+    protected $table = 'bukus';
+    protected $primaryKey = 'BukuID';
+
+    protected $fillable = [
+        'Judul',
+        'Penulis',
+        'Penerbit',
+        'TahunTerbit',
+        'Deskripsi',
+        'Gambar',
+        'KategoriID'
+    ];
 }
