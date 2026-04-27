@@ -1,7 +1,9 @@
-@extends('admin.dashboard.layout') {{-- sementara pakai layout admin dulu --}}
+@extends('layouts.admin')
 
 @section('content')
 
 <h3>Dashboard Petugas</h3>
+
+<p>Halo, {{ $user->name }}</p>
 
 @endsection

@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Admin Panel</title>
 
     <link href="{{ asset('sbadmin/css/styles.css') }}" rel="stylesheet">
 </head>
 
 <body class="sb-nav-fixed">
 
-<!-- TOP NAVBAR -->
+<!-- TOPBAR -->
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand ps-3">WikraBook</a>
 
-    <form method="POST" action="{{ route('logout') }}" class="ms-auto me-3">
+    <a class="navbar-brand ps-3" href="/dashboard">Library Admin</a>
+
+    <div class="ms-auto me-3 text-white">
+        {{ auth()->user()->name }}
+    </div>
+
+    <form method="POST" action="{{ route('logout') }}">
         @csrf
-        <button class="btn btn-danger btn-sm">Logout</button>
+        <button class="btn btn-danger btn-sm me-3">Logout</button>
     </form>
+
 </nav>
 
 <div id="layoutSidenav">
@@ -28,8 +34,13 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
 
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                    <a class="nav-link" href="/admin/buku">Data Buku</a>
+                    <a class="nav-link" href="/dashboard">
+                        Dashboard
+                    </a>
+
+                    <a class="nav-link" href="/admin/buku">
+                        Kelola Buku
+                    </a>
 
                 </div>
             </div>
@@ -39,18 +50,17 @@
 
     <!-- CONTENT -->
     <div id="layoutSidenav_content">
-        <main class="p-4">
 
-            <h4>Halo, {{ auth()->user()->name }}</h4>
+        <main class="p-4">
 
             @yield('content')
 
         </main>
+
     </div>
 
 </div>
 
 <script src="{{ asset('sbadmin/js/scripts.js') }}"></script>
-
 </body>
 </html>

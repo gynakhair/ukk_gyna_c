@@ -20,20 +20,22 @@ Route::get('/register', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::middleware(['role:admin,petugas'])->group(function () {
-
-        // ADMIN BUKU
+    // ADMIN
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
+        Route::get('/buku', [BukuController::class, 'index'])->name('admin.buku.index');
+        Route::get('/buku/create', [BukuController::class, 'create'])->name('admin.buku.create');
+        Route::post('/buku', [BukuController::class, 'store'])->name('admin.buku.store');
+        Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
+        Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
+        Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('admin.buku.destroy');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | PEMINJAM (USER APP)
-    |--------------------------------------------------------------------------
-    */
-    
+    // PETUGAS
+    Route::prefix('petugas')->middleware('role:petugas')->group(function () {
+        Route::get('/buku', [BukuController::class, 'indexPetugas'])->name('petugas.buku.index');
+    });
 
 });
 

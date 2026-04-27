@@ -18,4 +18,14 @@ class Buku extends Model
         'Gambar',
         'KategoriID'
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE KATEGORI
+    |--------------------------------------------------------------------------
+    */
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriBuku::class, 'KategoriID');
+    }
 }
