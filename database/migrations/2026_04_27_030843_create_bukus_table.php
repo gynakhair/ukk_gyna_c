@@ -17,7 +17,9 @@ return new class extends Migration
             $table->year('TahunTerbit');
             $table->text('Deskripsi')->nullable();
             $table->string('Gambar')->nullable();
-            $table->foreignId('KategoriID')->constrained('kategori_bukus', 'KategoriID');
+            $table->foreignId('KategoriID')
+                ->constrained('kategori_bukus', 'KategoriID')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
