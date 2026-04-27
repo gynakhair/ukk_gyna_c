@@ -1,28 +1,39 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\DashboardController;
+
+
 
 Route::get('/', function () {
-    return view('welcome');
+    return Auth::check()
+        ? redirect('/dashboard')
+        : redirect('/login');
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
 });
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
 
-        $user = auth()->user();
+    Route::middleware(['role:admin,petugas'])->group(function () {
 
-        if ($user->role === 'admin') {
-            return view('admin.dashboard.index');
-        }
+        // ADMIN BUKU
+    });
 
-        if ($user->role === 'petugas') {
-            return view('petugas.dashboard.index');
-        }
-
-        return view('peminjam.dashboard.index');
-
-    })->name('dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | PEMINJAM (USER APP)
+    |--------------------------------------------------------------------------
+    */
+    
 
 });
 
