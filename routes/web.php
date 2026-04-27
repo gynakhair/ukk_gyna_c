@@ -1,34 +1,28 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BukuController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('buku', BukuController::class);
-    
-    Route::middleware(['role:admin'])->group(function () {
-        Route::resource('admin/buku', BukuController::class);
-    });
+    Route::get('/dashboard', function () {
 
-    Route::middleware(['role:petugas'])->group(function () {
-        Route::resource('petugas/buku', BukuController::class);
-    });
+        $user = auth()->user();
 
-    Route::middleware(['role:peminjam'])->group(function () {
-        Route::get('peminjam/buku', [BukuController::class, 'index']);
-    });
+        if ($user->role === 'admin') {
+            return view('admin.dashboard.index');
+        }
+
+        if ($user->role === 'petugas') {
+            return view('petugas.dashboard.index');
+        }
+
+        return view('peminjam.dashboard.index');
+
+    })->name('dashboard');
 
 });
 
